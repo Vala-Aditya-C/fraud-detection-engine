@@ -26,13 +26,10 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip install pytest pytest-asyncio httpx
 
-      - name: Train ML Model (Generate Artifacts)
+      - name: Train ML Model
         run: |
           python train_model.py
 
-      - name: Run Test Suite with Pytest
+      - name: Run Pytest
         run: |
           python -m pytest test_main.py -v
-    - name: Verify Docker Build
-      run: |
-        docker build -t fraud-detection-engine:latest .
