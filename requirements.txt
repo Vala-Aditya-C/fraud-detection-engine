@@ -8,3 +8,6 @@ joblib
 pydantic
 requests
 locust
+streamlit
+pytest 
+httpx
