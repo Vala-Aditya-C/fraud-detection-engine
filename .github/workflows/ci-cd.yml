@@ -12,12 +12,13 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v5
 
       - name: Set up Python 3.12
-        uses: actions/setup-python@v5.4.0
+        uses: actions/setup-python@v6
         with:
           python-version: "3.12"
+          cache: "pip"
 
       - name: Install Dependencies
         run: |
@@ -25,10 +26,13 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip install pytest pytest-asyncio httpx scikit-learn joblib
 
-      - name: Train ML Model
+      - name: Train ML Model & Verify Artifact
         run: |
           python train_model.py
+          ls -la
 
       - name: Run Pytest
+        env:
+          PYTHONPATH: .
         run: |
           python -m pytest test_main.py -v --tb=short
