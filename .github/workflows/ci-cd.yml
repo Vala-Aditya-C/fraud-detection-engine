@@ -12,13 +12,12 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v5
 
       - name: Set up Python 3.12
-        uses: actions/setup-python@v5.4.0
+        uses: actions/setup-python@v7
         with:
           python-version: "3.12"
-          cache: "pip"
 
       - name: Install Dependencies
         run: |
@@ -32,4 +31,4 @@ jobs:
 
       - name: Run Pytest
         run: |
-          python -m pytest test_main.py -v
+          python -m pytest test_main.py -v --tb=short
