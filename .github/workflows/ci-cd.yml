@@ -36,3 +36,7 @@ jobs:
           PYTHONPATH: .
         run: |
           python -m pytest test_main.py -v --tb=short
+
+      - name: Build Docker Image in GitHub Actions
+        run: |
+          docker build -t fraud-detection-engine:${{ github.sha }} .
