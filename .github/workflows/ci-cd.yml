@@ -33,6 +33,3 @@ jobs:
       - name: Run Pytest
         run: |
           python -m pytest test_main.py -v
-      - name: Run Pytest
-        run: |
-          python -m pytest test_main.py -v
