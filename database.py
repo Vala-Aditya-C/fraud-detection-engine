@@ -1,16 +1,15 @@
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy import Column, Integer, String, Float, DateTime
-from datetime import datetime
+from datetime import datetime, timezone
 
-# Async SQLite Connection String
 DATABASE_URL = "sqlite+aiosqlite:///./transactions.db"
 
 engine = create_async_engine(DATABASE_URL, echo=False)
 AsyncSessionLocal = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 Base = declarative_base()
 
-# Database Schema for Logging Transactions
+
 class TransactionLog(Base):
     __tablename__ = "transaction_logs"
 
@@ -23,9 +22,16 @@ class TransactionLog(Base):
     status = Column(String)
     risk_score = Column(Float)
     reason = Column(String)
-    timestamp = Column(DateTime, default=datetime.utcnow)
+    timestamp = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
-# Helper function to initialize database tables
+
 async def init_db():
+    """Initialize database tables asynchronously."""
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+
+
+async def get_db():
+    """Dependency for obtaining an async database session."""
+    async with AsyncSessionLocal() as session:
+        yield session
