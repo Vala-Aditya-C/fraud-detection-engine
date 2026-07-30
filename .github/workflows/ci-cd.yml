@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Set up Python 3.12
         uses: actions/setup-python@v7
@@ -23,11 +23,12 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          pip install pytest pytest-asyncio httpx
+          pip install pytest pytest-asyncio httpx scikit-learn joblib
 
-      - name: Train ML Model
+      - name: Train ML Model & Verify Artifact
         run: |
           python train_model.py
+          ls -la  # Print files to confirm fraud_model.joblib is generated
 
       - name: Run Pytest
         run: |
